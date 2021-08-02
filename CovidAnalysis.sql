@@ -52,7 +52,7 @@ From AggregateDeathct
 
 --percentage affected in every continent 
 With aggregate_sum_and_population as(
-select continent, SUM(total_cases) AS total_cases, SUM(population) AS current_population  
+select continent, SUM(total_cases) AS total_cases, MAX(population) AS current_population  
 from PortfolioProject..CovidDeaths$ 
 where continent IS NOT NULL 
 group by continent
@@ -65,7 +65,7 @@ order by percentage_affected desc
 
 --percentage affected in every location 
 With need as(
-select location, SUM(total_cases) AS total_cases, SUM(population) AS current_population 
+select location, SUM(total_cases) AS total_cases, MAX(population) AS current_population 
 from PortfolioProject..CovidDeaths$ 
 where location NOT LIKE 'World'
 group by location, population
@@ -117,7 +117,7 @@ order by date
 --Percentage affected in buckets of 4 
 
 With aggregate_sum_and_population as(
-select location, SUM(total_cases) AS total_cases, SUM(population) AS current_population  
+select location, SUM(total_cases) AS total_cases, MAX(population) AS current_population  
 from PortfolioProject..CovidDeaths$ 
 where continent IS NOT NULL
  group by location, population 
@@ -129,8 +129,8 @@ order by percentile asc
 -- KF:- If were were to organize the percent_infected in quartiles; Vietnam, New Zealand, Taiwan are in the 25% low, Nepal, Malaysia, Pakistan, Finland are in mid 50%, Bulgaria, UAE, Turkey, are in the top 75% and finally sweden, lithuania, Peru, Chile,
 --Liechtenstein are amongst locations worst affected with percent_affected being >2%. 
 
-SELECT *
-, ROUND((total_cases/population), 4) * 100 AS Perc_Infected
+SELECT A.location,
+ ROUND((total_cases/population), 4) * 100 AS Perc_Infected
 , NTILE(4) over (order by ROUND((total_cases/population), 4) *100) AS Quar
  FROM PortfolioProject..CovidDeaths$ AS A
 JOIN ( SELECT LOCATION, MAX(DATE) AS MAX_DATE
@@ -139,7 +139,7 @@ JOIN ( SELECT LOCATION, MAX(DATE) AS MAX_DATE
         GROUP BY LOCATION 
         ) AS B 
 ON B.LOCATION = A.LOCATION
-AND B.MAX_DATE = A.MAX_DATE
+AND B.MAX_DATE = A.DATE
 WHERE A.continent IS NOT NULL
 
 SELECT *,
