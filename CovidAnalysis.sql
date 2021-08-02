@@ -1,5 +1,9 @@
 --what % of population has gotten covid 
 
+Select Location, date, Population, total_cases,  (total_cases/population)*100 as PercentPopulationInfected
+From PortfolioProject..CovidDeaths$
+order by 1,2
+
 --timeline 1 Jan 2020 18th june 2021
 
 select * from PortfolioProject..CovidDeaths$
@@ -96,13 +100,13 @@ where continent is not null AND new_cases is not null
 group by date
 order by total_new_cases desc
 
---Key Achievements : April 28th of this year about 9 Lakh. 
+--Key Highs : April 28th of this year about 9 Lakh. 
+
 --total death %
 
 select sum(cast(new_cases as int)) AS total_new_cases, sum(cast(new_deaths as int)) AS total_deaths, sum(cast(new_deaths as int))/sum(new_cases) * 100 AS deathpercentage 
 from PortfolioProject..CovidDeaths$
 where continent is not null 
---group by date
 order by 1,2 desc
 
 --where did the first case of 2020 come?
@@ -151,3 +155,5 @@ FROM PortfolioProject..CovidDeaths$ A
 WHERE A.continent IS NOT NULL
 ) AS D
 WHERE D.RNK = 1
+
+
