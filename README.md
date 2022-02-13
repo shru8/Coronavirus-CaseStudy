@@ -1,5 +1,6 @@
 # CoronavirusCaseStudy-
 Explorartory Analysis of the impact of the Covid19 Outbreak in the World between 1 Januray 2020 to Mid June 2021 
+Link to Tableau Dashboard: https://public.tableau.com/app/profile/shruti.bhatnagar/viz/Casestudy-Coronavirus/Dashboard1 
 
 Queries help answer the following questions:
 
